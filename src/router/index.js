@@ -1,8 +1,8 @@
+import { createRouter, createWebHashHistory } from 'vue-router';
 import Login from '@/views/Login.vue';
 import MainBox from '@/views/MainBox.vue';
-import { createRouter, createWebHashHistory } from 'vue-router';
-import RouterConfig  from './config';
-
+import routesConfig from './config';
+import store from '@/store';
 const routes = [
   {
     path: '/login',
@@ -11,10 +11,9 @@ const routes = [
   },
   {
     path: '/mainbox',
-    name: 'mainbox',
+    name: 'mainbox', //必须有name属性 否则 孩子 找不到
     component: MainBox,
   },
-  // mainbox 的孩子路由将根据权限动态添加
 ];
 
 const router = createRouter({
@@ -22,30 +21,30 @@ const router = createRouter({
   routes,
 });
 
-// 动态添加路由的函数
-const addDynamicRoutes = () => {
-  RouterConfig.forEach((item) => {
-    // 检查路由是否已经存在
-    const routeExists = router.getRoutes().some((route) => route.path === `/mainbox/${item.path}`);
-    if (!routeExists) {
-      router.addRoute('mainbox', item);
-    }
-  });
-};
-
-// 路由守卫
 router.beforeEach((to, from, next) => {
-  if (to.name === 'login') {
-    next(); // 访问登录页，直接放行
+  if (to.name === "login") {
+    next()
   } else {
-    if (!localStorage.getItem('token')) {
-      next({ path: '/login' }); // 未登录，重定向到登录页
+    if (!localStorage.getItem("token")) {
+      next({
+        path: '/login'
+      })
     } else {
-      // 已登录，动态添加路由
-      addDynamicRoutes();
-      next();
+      if(!store.state.routesAdded){
+        ConfigRouter()
+        console.log('跳转到 ', to.fullPath);
+        next(to.fullPath)
+      }else{
+        next()
+      }
     }
   }
-});
+  console.log(router.getRoutes());
+})
+
+const ConfigRouter = () => {
+  routesConfig.forEach(item => router.addRoute("mainbox", item))
+  store.commit("changeRoutesAdded", true)
+}
 
 export default router;
