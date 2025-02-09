@@ -1,3 +1,10 @@
+需要安装的库:
+npm i element-plus 
+npm i particles.vue3  (粒子库)
+
+
+------------------------
+
 --------- git ----------
     登录 GitHub。点击右上角的 +，选择 New repository。
 
