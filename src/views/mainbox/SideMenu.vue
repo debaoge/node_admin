@@ -1,7 +1,7 @@
 <template>
     <el-aside :width="$store.state.isCollapsed ? '64px' : '200px'">
       <el-menu
-        default-active="1"
+        default-active="route.fullPath"
         class="el-menu-vertical"
         :collapse="$store.state.isCollapsed"
         :router="true"
@@ -49,7 +49,13 @@
   
   <script setup>
   import { Histogram, UserFilled, HomeFilled, Avatar, Promotion } from "@element-plus/icons-vue";
-  
+  import { useRouter } from "vue-router";
+  import { useRoute } from "vue-router";
+  const router = useRouter()
+  const route = useRoute()
+
+  console.log(route.fullPath);
+
   </script>
   
   <style scoped>

@@ -55,12 +55,13 @@
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    background-color: wheat;
+    background-color: gray;
     text-align: center;
     padding: 20px;
 
     h3{
         font-size: 30px;
+        color: white;
     }
 
     .loginform{
@@ -77,7 +78,7 @@
   :deep(.el-form-item__label) {
     flex: 0 0 80px; /* 固定 label 宽度 */
     margin-right: 5px; /* 调整 label 和 input 之间的距离 */
-    color: rosybrown;
+    color: white;
   }
   :deep(.el-form-item__content) {
     margin-left: 5px !important; /* 调整 label 和 input 之间的距离 */
