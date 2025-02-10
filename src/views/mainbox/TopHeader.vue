@@ -5,5 +5,9 @@
       </template>
       
       <script setup>
-      // Add any necessary logic or imports here
+      import store from '@/store';
+
+      // const collapse = store.changeIsCollapsed(state, true)
+      
+
       </script>

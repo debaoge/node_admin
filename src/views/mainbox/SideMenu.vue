@@ -1,9 +1,9 @@
 <template>
-    <el-aside width="200px">
+    <el-aside :width="$store.state.isCollapsed ? '64px' : '200px'">
       <el-menu
         default-active="1"
         class="el-menu-vertical"
-        :collapse="isCollapsed"
+        :collapse="$store.state.isCollapsed"
       >
         <!-- 直接的菜单项 -->
         <el-menu-item index="/home">
@@ -47,10 +47,8 @@
   </template>
   
   <script setup>
-  import { ref } from "vue";
-  import { Menu as IconMenu,Histogram, UserFilled, HomeFilled, Avatar, Promotion } from "@element-plus/icons-vue";
+  import { Histogram, UserFilled, HomeFilled, Avatar, Promotion } from "@element-plus/icons-vue";
   
-  const isCollapsed = ref(false);
   </script>
   
   <style scoped>

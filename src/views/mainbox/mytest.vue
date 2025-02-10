@@ -1,101 +1,59 @@
 <template>
-    <el-row class="tac">
-      <el-col :span="12">
-        <h5 class="mb-2">Default colors</h5>
-        <el-menu
-          default-active="2"
-          class="el-menu-vertical-demo"
-          @open="handleOpen"
-          @close="handleClose"
-        >
-          <el-sub-menu index="1">
-            <template #title>
-              <el-icon><location /></el-icon>
-              <span>Navigator One</span>
-            </template>
-            <el-menu-item-group title="Group One">
-              <el-menu-item index="1-1">item one</el-menu-item>
-              <el-menu-item index="1-2">item two</el-menu-item>
-            </el-menu-item-group>
-            <el-menu-item-group title="Group Two">
-              <el-menu-item index="1-3">item three</el-menu-item>
-            </el-menu-item-group>
-            <el-sub-menu index="1-4">
-              <template #title>item four</template>
-              <el-menu-item index="1-4-1">item one</el-menu-item>
-            </el-sub-menu>
-          </el-sub-menu>
-          <el-menu-item index="2">
-            <el-icon><icon-menu /></el-icon>
-            <span>Navigator Two</span>
-          </el-menu-item>
-          <el-menu-item index="3" disabled>
-            <el-icon><document /></el-icon>
-            <span>Navigator Three</span>
-          </el-menu-item>
-          <el-menu-item index="4">
-            <el-icon><setting /></el-icon>
-            <span>Navigator Four</span>
-          </el-menu-item>
-        </el-menu>
-      </el-col>
-      <el-col :span="12">
-        <h5 class="mb-2">Custom colors</h5>
-        <el-menu
-          active-text-color="#ffd04b"
-          background-color="#545c64"
-          class="el-menu-vertical-demo"
-          default-active="2"
-          text-color="#fff"
-          @open="handleOpen"
-          @close="handleClose"
-        >
-          <el-sub-menu index="1">
-            <template #title>
-              <el-icon><location /></el-icon>
-              <span>Navigator One</span>
-            </template>
-            <el-menu-item-group title="Group One">
-              <el-menu-item index="1-1">item one</el-menu-item>
-              <el-menu-item index="1-2">item two</el-menu-item>
-            </el-menu-item-group>
-            <el-menu-item-group title="Group Two">
-              <el-menu-item index="1-3">item three</el-menu-item>
-            </el-menu-item-group>
-            <el-sub-menu index="1-4">
-              <template #title>item four</template>
-              <el-menu-item index="1-4-1">item one</el-menu-item>
-            </el-sub-menu>
-          </el-sub-menu>
-          <el-menu-item index="2">
-            <el-icon><icon-menu /></el-icon>
-            <span>Navigator Two</span>
-          </el-menu-item>
-          <el-menu-item index="3" disabled>
-            <el-icon><document /></el-icon>
-            <span>Navigator Three</span>
-          </el-menu-item>
-          <el-menu-item index="4">
-            <el-icon><setting /></el-icon>
-            <span>Navigator Four</span>
-          </el-menu-item>
-        </el-menu>
-      </el-col>
-    </el-row>
-  </template>
-  
-  <script lang="ts" setup>
-  import {
-    Document,
-    Menu as IconMenu,
-    Location,
-    Setting,
-  } from '@element-plus/icons-vue'
-  const handleOpen = (key: string, keyPath: string[]) => {
-    console.log(key, keyPath)
-  }
-  const handleClose = (key: string, keyPath: string[]) => {
-    console.log(key, keyPath)
-  }
-  </script>
-  
+  <el-aside :width="$store.state.isCollapsed ? '64px' : '200px'">
+    <el-menu
+      default-active="1"
+      class="el-menu-vertical"
+      :collapse="$store.state.isCollapsed"
+    >
+      <el-menu-item index="/home">
+        <el-icon><HomeFilled /></el-icon>
+        <span>首页</span>
+      </el-menu-item>
+      
+      <el-menu-item index="/center">
+        <el-icon><UserFilled /></el-icon>
+        <span>个人中心</span>
+      </el-menu-item>
+      
+      <el-sub-menu index="/user-manage">
+        <template #title>
+          <el-icon><Avatar /></el-icon>
+          <span>用户管理</span>
+        </template>
+        <el-menu-item index="/user-manage/adduser">添加用户</el-menu-item>
+        <el-menu-item index="/user-manage/userlist">用户列表</el-menu-item>
+      </el-sub-menu>
+      
+      <el-sub-menu index="/product-manage">
+        <template #title>
+          <el-icon><Histogram /></el-icon>
+          <span>产品管理</span>
+        </template>
+        <el-menu-item index="/product-manage/addproduct">添加产品</el-menu-item>
+        <el-menu-item index="/product-manage/productlist">产品列表</el-menu-item>
+      </el-sub-menu>
+      
+      <el-sub-menu index="/news-manage">
+        <template #title>
+          <el-icon><Promotion /></el-icon>
+          <span>新闻管理</span>
+        </template>
+        <el-menu-item index="/news-manage/addnews">添加新闻</el-menu-item>
+        <el-menu-item index="/news-manage/newslist">新闻列表</el-menu-item>
+      </el-sub-menu>
+    </el-menu>
+  </el-aside>
+</template>
+
+<script setup>
+import { Histogram, UserFilled, HomeFilled, Avatar, Promotion } from "@element-plus/icons-vue";
+</script>
+
+<style scoped>
+.el-menu-vertical {
+  width: 100%;
+  height: 100vh;
+  background-color: white;
+  border-right: 1px solid #e6e6e6;
+}
+</style>
