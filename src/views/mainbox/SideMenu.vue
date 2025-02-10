@@ -4,6 +4,7 @@
         default-active="1"
         class="el-menu-vertical"
         :collapse="$store.state.isCollapsed"
+        :router="true"
       >
         <!-- 直接的菜单项 -->
         <el-menu-item index="/home">
@@ -21,26 +22,26 @@
             <el-icon><Avatar /></el-icon>
             <span>用户管理</span>
           </template>
-          <el-menu-item index="/user-manage/adduser">添加用户</el-menu-item>
-          <el-menu-item index="/user-manage/userlist">用户列表</el-menu-item>
+          <el-menu-item index="/mainbox/user-manage/adduser" >添加用户</el-menu-item>
+          <el-menu-item index="/mainbox/user-manage/userlist">用户列表</el-menu-item>
         </el-sub-menu>
       
-        <el-sub-menu index="/product-manage">
+        <el-sub-menu index="product-manage">
           <template #title>
             <el-icon><Histogram /></el-icon>
             <span>产品管理</span>
           </template>
-          <el-menu-item index="/product-manage/addproduct">添加产品</el-menu-item>
-          <el-menu-item index="/product-manage/productlist">产品列表</el-menu-item>
+          <el-menu-item index="/mainbox/product-manage/addproduct">添加产品</el-menu-item>
+          <el-menu-item index="/mainbox/product-manage/productlist">产品列表</el-menu-item>
         </el-sub-menu>
       
-        <el-sub-menu index="/news-manage">
+        <el-sub-menu index="news-manage">
           <template #title>
             <el-icon><Promotion /></el-icon>
             <span>新闻管理</span>
           </template>
-          <el-menu-item index="/news-manage/addnews">添加产品</el-menu-item>
-          <el-menu-item index="/news-manage/newslist">产品列表</el-menu-item>
+          <el-menu-item index="/mainbox/news-manage/addnews">添加产品</el-menu-item>
+          <el-menu-item index="/mainbox/news-manage/newslist">产品列表</el-menu-item>
         </el-sub-menu>
       </el-menu>
     </el-aside>

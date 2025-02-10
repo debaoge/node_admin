@@ -1,13 +1,23 @@
 <template>
         <el-header>
-          <h1>My Application</h1>
+          <h1>header</h1>
+          <button @click="toggelMenu">toggle menu</button>
         </el-header>
       </template>
       
       <script setup>
-      import store from '@/store';
 
-      // const collapse = store.changeIsCollapsed(state, true)
+      import {useStore} from 'vuex';
+      import { computed } from 'vue';
+    
+      const store = useStore()
+      const isCollapse = computed(
+        ()=> store.state.isCollapsed);
       
+
+      const toggelMenu = ()=>{
+        store.commit("changeIsCollapsed", !isCollapse.value)
+      }
+       
 
       </script>
