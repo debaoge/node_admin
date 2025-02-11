@@ -37,12 +37,11 @@ export default {
     const handleSubmit = () => {
       loginFormRef.value.validate((valid) => {
         if (valid) {
-          console.log(loginForm);
           localStorage.setItem("token", "login-token");
-          axios.get('/users')
+          
+          axios.post('/adminapi/user/login',loginForm)
             .then(response => console.log(response.data))
             .catch(error => console.error(error));
-          router.push('/index')
         }
       });
     };
