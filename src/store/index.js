@@ -7,8 +7,10 @@ export default createStore({
     isCollapsed: false,
     userInfo:{
       username:"",
+      password:"",
       role:"",
       introduction:"",
+      avatar:"",
       gender:0
     }
 
