@@ -7,7 +7,7 @@
       <span style="margin-left: 10px;">企业门户网站管理系统</span>
     </div>
     <div class="right">
-      <span>欢迎 ad 回来</span>
+      <span>欢迎 {{ store.state.userInfo.username }} 回来</span>
       <el-dropdown>
         <span class="el-dropdown-link">
           <el-icon :size="28" color="white">
@@ -48,7 +48,8 @@ const handleCenter = ()=>{
 }
 const handleLogout = ()=>{
   localStorage.removeItem("token");
-  router.push("/index")
+  store.commit("clearUserInfo")
+  router.push("/login")
 }
 </script>
 <style>

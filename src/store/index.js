@@ -4,7 +4,13 @@ import createPersistedState from 'vuex-persistedstate';
 export default createStore({
   state: {
     routesAdded : false,
-    isCollapsed: false
+    isCollapsed: false,
+    userInfo:{
+      username:"",
+      role:"",
+      introduction:"",
+      gender:0
+    }
 
   },
   getters: {
@@ -15,7 +21,16 @@ export default createStore({
     },
     changeIsCollapsed(state, value){
       state.isCollapsed = value
+    },
+    changeUserInfo(state, value){
+      state.userInfo = {
+        ...state.userInfo,...value
+      }
+    },
+    clearUserInfo(state, value){
+      state.userInfo = {}
     }
+
   },
   actions: {
   },
@@ -24,7 +39,7 @@ export default createStore({
   plugins: [
     createPersistedState({
       storage: window.localStorage,
-      paths: ['isCollapsed'],
+      paths: ['isCollapsed','userInfo'],
     }),
   ],
 })

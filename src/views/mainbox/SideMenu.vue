@@ -7,7 +7,7 @@
         :router="true"
       >
         <!-- 直接的菜单项 -->
-        <el-menu-item index="/home">
+        <el-menu-item index="/index">
             <el-icon><HomeFilled /></el-icon>
             <span>首页</span>
         </el-menu-item>

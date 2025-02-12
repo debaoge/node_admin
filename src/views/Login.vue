@@ -9,7 +9,7 @@
         <el-input v-model="loginForm.password" type="password" />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="handleSubmit">登录</el-button>
+        <el-button type="primary" :loading="loading" @click="handleSubmit">登录</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -18,7 +18,9 @@
 <script>
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import axios from 'axios'
+import axios from 'axios';
+import { ElMessage } from "element-plus";
+import { useStore } from "vuex";
 
 export default {
   setup() {
@@ -33,23 +35,44 @@ export default {
     });
 
     const loginFormRef = ref();
-    const router = useRouter()
-    const handleSubmit = () => {
-      loginFormRef.value.validate((valid) => {
-        if (valid) {
-          localStorage.setItem("token", "login-token");
-          
-          axios.post('/adminapi/user/login',loginForm)
-            .then(response => console.log(response.data))
-            .catch(error => console.error(error));
+    const router = useRouter();
+    const loading = ref(false); // 加载状态
+    const store = useStore();
+
+    const handleSubmit = async () => {
+      try {
+        // 验证表单
+        await loginFormRef.value.validate();
+        loading.value = true; // 开始加载
+
+        // 发送登录请求
+        const res = await axios.post('/adminapi/user/login', loginForm);
+
+        console.log('res.data.ActionType: ', res.data.ActionType);
+
+        if (res.data.ActionType === "OK") {
+          console.log('[Login] 从数据库得到的信息: username: ',res.data.data.username);
+          store.commit("changeUserInfo", res.data.data)
+          router.push("/index"); 
+        } 
+      } catch (error) {
+        // 处理错误
+        if (error.response) {
+          // 服务器返回的错误
+          ElMessage.error(error.response.data.error || '登录失败');
+        } else {
+          ElMessage.error('网络错误，请稍后重试');
         }
-      });
+      } finally {
+        loading.value = false; // 结束加载
+      }
     };
 
-    return { loginForm, rules, loginFormRef, handleSubmit };
+    return { loginForm, rules, loginFormRef, handleSubmit, loading };
   },
 };
 </script>
+
 
 <style lang="scss" scoped>
 .form-container {
