@@ -14,7 +14,6 @@ const routesConfig = [
     {
         path: '/index', 
         component: Home,
-      
     },
     {
         path: '/center', 
