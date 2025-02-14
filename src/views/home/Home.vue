@@ -1,8 +1,6 @@
 <template>
     <div>
         <el-page-header title="企业门户管理系统" icon="" content="首页">
-           
-            
             <el-card class="box-card" shadow="always">
                 <el-row>
                     <el-col :span="4">
@@ -38,8 +36,9 @@ import { computed } from 'vue';
 import { useStore } from 'vuex';
 
 const store = useStore()
-const avatarUrl = computed(()=> store.state.userInfo.avatar ? store.state.userInfo.avatar 
-: `https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png`)
+const avatarUrl = computed(() => store.state.userInfo.avatar 
+? 'http://localhost:3000'+store.state.userInfo.avatar
+: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png');
 
 const welcomeText = computed(()=> new Date().getHours > 12 ? ', 喝杯咖啡休息一下吧' : ', 开心美美的一天');
 

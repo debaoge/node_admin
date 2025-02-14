@@ -5,14 +5,15 @@ export default createStore({
   state: {
     routesAdded : false,
     isCollapsed: false,
-    userInfo:{
-      username:"",
-      password:"",
-      role:"",
-      introduction:"",
-      avatar:"",
-      gender:0
-    }
+    // userInfo:{
+    //   username:"",
+    //   password:"",
+    //   role:"",
+    //   introduction:"",
+    //   avatar:"",
+    //   gender:0
+    // }，
+    userInfo: JSON.parse(localStorage.getItem('userInfo')) || {} // 初始化时从 localStorage 读取
 
   },
   getters: {
@@ -24,11 +25,12 @@ export default createStore({
     changeIsCollapsed(state, value){
       state.isCollapsed = value
     },
-    changeUserInfo(state, value){
-      state.userInfo = {
-        ...state.userInfo,...value
-      }
+
+    changeUserInfo(state, userInfo) {
+      state.userInfo = userInfo;
+      localStorage.setItem('userInfo', JSON.stringify(userInfo)); // 更新时保存到 localStorage
     },
+    
     clearUserInfo(state, value){
       state.userInfo = {}
     }

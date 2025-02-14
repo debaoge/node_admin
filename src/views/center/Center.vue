@@ -4,7 +4,7 @@
     <el-row :gutter="20" class="el-row">
       <el-col :span="8">
         <el-card class="box-card">
-          <el-avatar :size="100" :src="avatarUrl" />
+          <el-avatar :size="100" :src="userForm.avatar" />
           <h3>{{ store.state.userInfo.username }}</h3>
           <h5>{{ store.state.userInfo.role === 1 ? '管理员' : '编辑' }}</h5>
         </el-card>
@@ -56,10 +56,10 @@ import { computed, reactive, ref } from 'vue';
 import { useStore } from 'vuex';
 import { Plus } from '@element-plus/icons-vue';
 import axios from 'axios';
+import { ElMessage } from 'element-plus';
 
 const store = useStore();
 const userFormRef = ref();
-const avatarUrl = computed(() => store.state.userInfo.avatar || 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png');
 
 const { username, gender, introduction, avatar } = store.state.userInfo;
 const userForm = reactive({
@@ -91,7 +91,7 @@ const handleChange = (file) => {
   if (file.raw) {
     const reader = new FileReader();
     reader.onload = (e) => {
-      userForm.avatar = e.target.result; // 将图片转换为 Base64
+      userForm.avatar = e.target.result; 
     };
     reader.readAsDataURL(file.raw);
     userForm.file = file.raw
@@ -108,16 +108,19 @@ const handleSubmit = () => {
       }
       console.log('发送到后端: ', params);
       
-    //   axios.post("/adminapi/user/upload", params, {
-    //     headers: {
-    //         "Content-Type":"multipart/form-data"
-    //     }
-    //   }).then(res=>{
-    //     console.log(res.data);
-    //      res.data
-    //   })
-    // } else {
-    //   console.log('表单验证失败');
+      axios.post("/adminapi/user/upload", params, {
+        headers: {
+            "Content-Type":"multipart/form-data"
+        }
+      }).then(res=>{
+        console.log(res.data);
+        if(res.data.ActionType === "OK"){
+          store.commit("changeUserInfo", res.data.data)
+          ElMessage.success("更新成功")
+        }
+      })
+    } else {
+      console.log('表单验证失败');
     }
   });
 };
