@@ -4,7 +4,7 @@
     <el-row :gutter="20" class="el-row">
       <el-col :span="8">
         <el-card class="box-card">
-          <el-avatar :size="100" :src="userForm.avatar" />
+          <el-avatar :size="100" :src="avatarUrl" />
           <h3>{{ store.state.userInfo.username }}</h3>
           <h5>{{ store.state.userInfo.role === 1 ? '管理员' : '编辑' }}</h5>
         </el-card>
@@ -35,7 +35,7 @@
                 :on-change="handleChange"
                 :auto-upload="false"
               >
-                <img v-if="userForm.avatar" :src="userForm.avatar" class="avatar" />
+                <img v-if="userForm.avatar" :src="avatarUrl" class="avatar" />
                 <el-icon v-else class="avatar-uploader-icon">
                   <Plus />
                 </el-icon>
@@ -86,6 +86,10 @@ const options = [
   { value: '1', label: '男' },
   { value: '2', label: '女' },
 ];
+
+const avatarUrl = computed(() => store.state.userInfo.avatar 
+? 'http://localhost:3000'+store.state.userInfo.avatar
+: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png');
 
 const handleChange = (file) => {
   if (file.raw) {
