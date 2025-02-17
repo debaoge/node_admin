@@ -35,7 +35,7 @@
                 :on-change="handleChange"
                 :auto-upload="false"
               >
-                <img v-if="userForm.avatar" :src="avatarUrl" class="avatar" />
+                <img v-if="avatarUrl" :src="avatarUrl" class="avatar" />
                 <el-icon v-else class="avatar-uploader-icon">
                   <Plus />
                 </el-icon>
@@ -64,7 +64,7 @@ const userFormRef = ref();
 const { username, gender, introduction, avatar } = store.state.userInfo;
 const userForm = reactive({
   username,
-  gender,
+  gender:gender,
   avatar,
   introduction,
   file:null
@@ -82,14 +82,24 @@ const userFormRules = {
 };
 
 const options = [
-  { value: '0', label: '保密' },
-  { value: '1', label: '男' },
-  { value: '2', label: '女' },
+  { value: 0, label: '保密' },
+  { value: 1, label: '男' },
+  { value: 2, label: '女' },
 ];
 
-const avatarUrl = computed(() => store.state.userInfo.avatar 
-? 'http://localhost:3000'+store.state.userInfo.avatar
-: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png');
+// 计算属性，动态返回头像 URL
+const avatarUrl = computed(() => {
+  if (userForm.avatar) {
+    // 如果 avatar 是 base64 数据（新上传的图片），直接返回
+    if (userForm.avatar.startsWith('data:image')) {
+      return userForm.avatar;
+    }
+    // 否则返回服务器上的图片路径
+    return 'http://localhost:3000' + userForm.avatar;
+  }
+  // 默认图片
+  return 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png';
+});
 
 const handleChange = (file) => {
   if (file.raw) {
