@@ -29,17 +29,8 @@
               <el-input type="textarea" v-model="userForm.introduction" />
             </el-form-item>
             <el-form-item label="头像" prop="avatar">
-              <el-upload
-                class="avatar-uploader"
-                :show-file-list="false"
-                :on-change="handleChange"
-                :auto-upload="false"
-              >
-                <img v-if="avatarUrl" :src="avatarUrl" class="avatar" />
-                <el-icon v-else class="avatar-uploader-icon">
-                  <Plus />
-                </el-icon>
-              </el-upload>
+              <!-- 将 avatar 和更新逻辑传递给子组件 -->
+              <Upload :avatar="userForm.avatar" @update-avatar="handleUpdateAvatar" />
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="handleSubmit">更新</el-button>
@@ -54,9 +45,9 @@
 <script setup>
 import { computed, reactive, ref } from 'vue';
 import { useStore } from 'vuex';
-import { Plus } from '@element-plus/icons-vue';
-import axios from 'axios';
 import { ElMessage } from 'element-plus';
+import upload from '@/util/upload';
+import Upload from '@/components/upload/Upload.vue';
 
 const store = useStore();
 const userFormRef = ref();
@@ -64,10 +55,10 @@ const userFormRef = ref();
 const { username, gender, introduction, avatar } = store.state.userInfo;
 const userForm = reactive({
   username,
-  gender:gender,
+  gender: gender,
   avatar,
   introduction,
-  file:null
+  file: null,
 });
 
 const userFormRules = {
@@ -101,38 +92,19 @@ const avatarUrl = computed(() => {
   return 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png';
 });
 
-const handleChange = (file) => {
-  if (file.raw) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      userForm.avatar = e.target.result; 
-    };
-    reader.readAsDataURL(file.raw);
-    userForm.file = file.raw
-  }
+// 处理子组件传递的新头像
+const handleUpdateAvatar = (newAvatar) => {
+  userForm.avatar = newAvatar; // 更新父组件的 avatar
 };
 
-const handleSubmit = () => {
-  userFormRef.value.validate((valid) => {
+const handleSubmit = async () => {
+  userFormRef.value.validate(async (valid) => {
     if (valid) {
-      console.log('表单验证通过，提交数据:', userForm);
-      const params = new FormData()
-      for(let i in userForm){
-        params.append(i,userForm[i])
+      const res = await upload('/adminapi/user/upload', userForm);
+      if (res.data.ActionType === 'OK') {
+        store.commit('changeUserInfo', res.data.data);
+        ElMessage.success('更新成功');
       }
-      console.log('发送到后端: ', params);
-      
-      axios.post("/adminapi/user/upload", params, {
-        headers: {
-            "Content-Type":"multipart/form-data"
-        }
-      }).then(res=>{
-        console.log(res.data);
-        if(res.data.ActionType === "OK"){
-          store.commit("changeUserInfo", res.data.data)
-          ElMessage.success("更新成功")
-        }
-      })
     } else {
       console.log('表单验证失败');
     }
