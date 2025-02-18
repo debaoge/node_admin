@@ -5,14 +5,7 @@ export default createStore({
   state: {
     routesAdded : false,
     isCollapsed: false,
-    // userInfo:{
-    //   username:"",
-    //   password:"",
-    //   role:"",
-    //   introduction:"",
-    //   avatar:"",
-    //   gender:0
-    // }，
+    
     userInfo: JSON.parse(localStorage.getItem('userInfo')) || {} // 初始化时从 localStorage 读取
 
   },
@@ -37,6 +30,9 @@ export default createStore({
 
   },
   actions: {
+    updateUserInfo({ commit }, userInfo) {
+      commit('changeUserInfo', userInfo);
+    }
   },
   modules: {
   },
@@ -44,6 +40,7 @@ export default createStore({
     createPersistedState({
       storage: window.localStorage,
       paths: ['isCollapsed','userInfo'],
+      userInfo:'userInfo'
     }),
   ],
 })

@@ -80,17 +80,22 @@ const options = [
 
 // 计算属性，动态返回头像 URL
 const avatarUrl = computed(() => {
-  if (userForm.avatar) {
-    // 如果 avatar 是 base64 数据（新上传的图片），直接返回
+  if (!userForm.avatar) {
+    return 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'; // 默认图片
+  }
+  if (typeof userForm.avatar === 'string') {
     if (userForm.avatar.startsWith('data:image')) {
       return userForm.avatar;
     }
-    // 否则返回服务器上的图片路径
     return 'http://localhost:3000' + userForm.avatar;
   }
-  // 默认图片
-  return 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png';
+  if (userForm.avatar instanceof File) {
+    return URL.createObjectURL(userForm.avatar);
+  }
+  return 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'; // 保险起见，返回默认图片
 });
+
+
 
 // 处理子组件传递的新头像
 const handleUpdateAvatar = (newAvatar) => {
@@ -99,10 +104,15 @@ const handleUpdateAvatar = (newAvatar) => {
 
 const handleSubmit = async () => {
   userFormRef.value.validate(async (valid) => {
+    console.log('Center userForm before submit:', userForm);
+    store.commit('changeUserInfo', userForm);
+    
     if (valid) {
       const res = await upload('/adminapi/user/upload', userForm);
-      if (res.data.ActionType === 'OK') {
-        store.commit('changeUserInfo', res.data.data);
+      console.log('Center 从服务器传回的 res:',res, res.data);
+        
+      if (res.ActionType === 'OK') {
+        store.commit('changeUserInfo', res.data);
         ElMessage.success('更新成功');
       }
     } else {

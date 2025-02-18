@@ -32,14 +32,13 @@ router.beforeEach((to, from, next) => {
     } else {
       if(!store.state.routesAdded){
         ConfigRouter()
-        console.log('跳转到 ', to.fullPath);
         next(to.fullPath)
       }else{
         next()
       }
     }
   }
-  console.log(router.getRoutes());
+  //console.log(router.getRoutes());
 })
 
 const ConfigRouter = () => {

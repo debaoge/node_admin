@@ -54,8 +54,6 @@
   const router = useRouter()
   const route = useRoute()
 
-  console.log(route.fullPath);
-
   </script>
   
   <style scoped>
