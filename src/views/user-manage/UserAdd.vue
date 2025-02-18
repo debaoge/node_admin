@@ -76,29 +76,6 @@ const handleUpdateAvatar = (newAvatar) => {
     userForm.avatar = newAvatar; // 更新父组件的 avatar
 };
 
-// const handleSubmit = async () => {
-
-//     userFormRef.value.validate(async (valid) => {
-//         if (valid) {
-//             console.log('add user', userForm);
-
-//             const res = await upload('/adminapi/user/add', userForm);
-//             console.log('ActionType res.data ', res.data.ActionType);
-               
-//             if (res.data.ActionType === 'OK') {
-//                 store.commit('changeUserInfo', res.data.data);
-//                 console.log('store data: ', res.data.data);
-//                 ElMessage.success('创建成功');
-//                 router.push(`/mainbox/user-manage/userlist`)
-//             }
-            
-//         } else {
-//             console.log('表单提交失败');
-//         }
-//     });
-
-// };
-
 const handleSubmit = async () => {
   userFormRef.value.validate(async (valid) => {
     if (valid) {
@@ -108,7 +85,7 @@ const handleSubmit = async () => {
         console.log('服务器返回的数据:', res); // 打印服务器返回的数据
 
         if (res.ActionType === 'OK') {
-        //   store.commit('changeUserInfo', res.data.data);
+          store.commit('changeUserInfo', res.data);
         
           ElMessage.success('创建成功');
           router.push('/mainbox/user-manage/userlist');
