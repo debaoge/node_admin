@@ -22,7 +22,7 @@
                 <Upload :avatar="userForm.avatar" @update-avatar="handleUpdateAvatar" />
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="handleSubmit">创建用户</el-button>
+                <el-button type="primary" @click="handleSubmit">添加用户</el-button>
             </el-form-item>
         </el-form>
     </div>
@@ -80,21 +80,15 @@ const handleSubmit = async () => {
   userFormRef.value.validate(async (valid) => {
     if (valid) {
       try {
-        console.log('提交的数据:', userForm); // 打印提交的数据
         const res = await upload('/adminapi/user/add', userForm);
-        console.log('服务器返回的数据:', res); // 打印服务器返回的数据
-
         if (res.ActionType === 'OK') {
           store.commit('changeUserInfo', res.data);
-        
           ElMessage.success('创建成功');
           router.push('/mainbox/user-manage/userlist');
         } else {
-          console.log('ActionType is undefined:', res.data);
-          ElMessage.error('创建失败：返回数据格式不正确');
+            ElMessage.error('创建失败：返回数据格式不正确');
         }
       } catch (error) {
-        console.error('请求失败:', error); // 打印错误信息
         ElMessage.error('请求失败，请检查网络或服务器状态');
       }
     } else {

@@ -5,9 +5,7 @@ export default createStore({
   state: {
     routesAdded : false,
     isCollapsed: false,
-    
-    userInfo: JSON.parse(localStorage.getItem('userInfo')) || {} // 初始化时从 localStorage 读取
-
+    userInfo: JSON.parse(localStorage.getItem('userInfo')) || {}, // 初始化时从 localStorage 读取
   },
   getters: {
   },
@@ -26,8 +24,7 @@ export default createStore({
     
     clearUserInfo(state, value){
       state.userInfo = {}
-    }
-
+    },
   },
   actions: {
     updateUserInfo({ commit }, userInfo) {

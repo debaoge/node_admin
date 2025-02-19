@@ -40,8 +40,8 @@
             <el-icon><Promotion /></el-icon>
             <span>新闻管理</span>
           </template>
-          <el-menu-item index="/mainbox/news-manage/addnews">添加产品</el-menu-item>
-          <el-menu-item index="/mainbox/news-manage/newslist">产品列表</el-menu-item>
+          <el-menu-item index="/mainbox/news-manage/addnews">添加新闻</el-menu-item>
+          <el-menu-item index="/mainbox/news-manage/newslist">新闻列表</el-menu-item>
         </el-sub-menu>
       </el-menu>
     </el-aside>

@@ -3,6 +3,7 @@ npm i element-plus
 npm i particles.vue3  (粒子库)
 npm i --save vuex-persistedstate
 npm i axios --save
+npm i wangeditor --save
 ------------------------
 
 --------- git ----------

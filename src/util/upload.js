@@ -12,8 +12,9 @@ function upload(path,userForm){
           "Content-Type":"multipart/form-data"
       }
     }).then(res => {
-      // console.log('upload 从后端 得到的res: ', res.data);
+      console.log('upload 从后端 得到的res: ', res.data);
       return res.data
     })
 }
+
 export default upload
