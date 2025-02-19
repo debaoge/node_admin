@@ -30,10 +30,11 @@ router.beforeEach((to, from, next) => {
         path: '/login'
       })
     } else {
-      if(!store.state.routesAdded){
+      if (!store.state.routesAdded) {
+        router.removeRoute("mainbox")
         ConfigRouter()
         next(to.fullPath)
-      }else{
+      } else {
         next()
       }
     }
@@ -41,8 +42,28 @@ router.beforeEach((to, from, next) => {
   //console.log(router.getRoutes());
 })
 
+const checkPermission = (item) => {
+  if (item.requireAdmin) {
+    return store.state.userInfo.role === 1
+  }
+  return true
+}
+
 const ConfigRouter = () => {
-  routesConfig.forEach(item => router.addRoute("mainbox", item))
+
+  if (!router.hasRoute("mainbox")) {
+    //防止从路径直接访问
+    router.addRoute({
+      path: '/mainbox',
+      name: 'mainbox', 
+      component: MainBox,
+    })
+  }
+
+  routesConfig.forEach(item => {
+    checkPermission(item) &&
+      router.addRoute("mainbox", item)
+  })
   store.commit("changeRoutesAdded", true)
 }
 

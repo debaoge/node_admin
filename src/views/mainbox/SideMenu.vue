@@ -17,7 +17,7 @@
             <span>个人中心</span>
         </el-menu-item>
        
-        <el-sub-menu index="/user-manage">
+        <el-sub-menu index="/user-manage" v-admin>
           <template #title>
             <el-icon><Avatar /></el-icon>
             <span>用户管理</span>
@@ -51,8 +51,18 @@
   import { Histogram, UserFilled, HomeFilled, Avatar, Promotion } from "@element-plus/icons-vue";
   import { useRouter } from "vue-router";
   import { useRoute } from "vue-router";
+  import { useStore } from "vuex";
   const router = useRouter()
   const route = useRoute()
+  const store = useStore()
+  const vAdmin = {
+    mounted(el){
+      console.log('SideMenu 新添加的指令 v-admin el:', el);
+      if(store.state.userInfo.role !== 1){
+        el.parentNode.removeChild(el)
+      }
+    }
+  }
 
   </script>
   

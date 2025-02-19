@@ -53,6 +53,8 @@ export default {
         if (res.data.ActionType === "OK") {
           console.log('[Login] 从数据库得到的信息: username: ',res.data.data.username);
           store.commit("changeUserInfo", res.data.data)
+          store.commit("changeRoutesAdded", false)
+          
           router.push("/index"); 
         } 
       } catch (error) {
