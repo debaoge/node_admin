@@ -57,7 +57,7 @@
   const store = useStore()
   const vAdmin = {
     mounted(el){
-      console.log('SideMenu 新添加的指令 v-admin el:', el);
+      // console.log('SideMenu 新添加的指令 v-admin el:', el);
       if(store.state.userInfo.role !== 1){
         el.parentNode.removeChild(el)
       }

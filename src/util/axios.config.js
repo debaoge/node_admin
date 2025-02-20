@@ -8,7 +8,7 @@ axios.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-    console.log("interceptor 拦截了 请求发送: ", config.url);
+    // console.log("interceptor 拦截了 请求发送: ", config.url);
     return config;
   },
   (error) => {
@@ -21,7 +21,7 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   (response) => {
     const { authorization } = response.headers;
-    console.log('拦截器 得到 headers', response.headers);
+    // console.log('拦截器 得到 headers', response.headers);
     
     authorization && localStorage.setItem("token", authorization);    
     return response;

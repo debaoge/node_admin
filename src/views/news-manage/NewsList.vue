@@ -52,7 +52,7 @@
 
 
         <el-dialog v-model="editDialogVisible" title="编辑新闻" width="50%">
-            <el-form ref="editFormRef" label-width="120px">
+            <el-form ref="editFormRef" label-width="120px" :model="editForm" >
                 <el-form-item label="标题" prop="title">
                     <el-input v-model="editForm.title" />
                 </el-form-item>
@@ -67,7 +67,8 @@
                     <el-input type="textarea" v-model="editForm.content" />
                 </el-form-item>
                 <el-form-item label="是否发布" prop="isPublish">
-                    <el-switch @change="handleSwitchChange(editForm)"  v-model="editForm.isPublish" :active-value="1" :inactive-value="0" />
+                    <el-switch @change="handleSwitchChange(editForm)" v-model="editForm.isPublish" :active-value="1"
+                        :inactive-value="0" />
                 </el-form-item>
             </el-form>
 
@@ -109,7 +110,7 @@ const editDialogVisible = ref(false)
 
 const getTableData = async () => {
     const res = await axios.get('/adminapi/news/list')
-    console.log('newslist: res: ', res);
+    // console.log('newslist: res: ', res);
     if (res.data.ActionType === 'OK') {
         tableData.value = res.data.data
     } else {
@@ -142,30 +143,25 @@ const handlePreview = (data) => {
 }
 
 const handleEdit = async (data) => {
-    editForm.value = data
     editDialogVisible.value = true
-
     const res = await axios.get(`adminapi/news/list/${data._id}`);
-    console.log('--------handleEdit res: ', res);
-    
+    // console.log('从数据库 取回数据 handleEdit res: ', res.data.data);    
     editForm.value = res.data.data[0]
 }
 const handleEditConfirm = async () => {
     editDialogVisible.value = false
     editFormRef.value.validate(async (valid) => {
         if (valid) {
-            console.log('popup fenster editForm: ', editForm.value);
+            // console.log('表单验证可以 editForm: ', editForm.value._id);
             const res = await axios.put(`adminapi/news/list/${editForm.value._id}`, editForm.value);
-        }
+        } 
     })
     getTableData()
 }
 
 const handleDelete = async (data) => {
-    //  console.log('newslist 删除 id:', data._id)
     const res = await axios.delete(`/adminapi/news/list/${data._id}`)
     getTableData()
-
 }
 </script>
 <style lang="scss" scoped>

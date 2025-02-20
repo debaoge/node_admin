@@ -64,6 +64,8 @@ const ConfigRouter = () => {
     checkPermission(item) &&
       router.addRoute("mainbox", item)
   })
+
+  
   store.commit("changeRoutesAdded", true)
 }
 
