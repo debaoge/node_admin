@@ -35,7 +35,7 @@
                         </el-button>
                         <el-popconfirm title="确定要删除吗?" @confirm="handleDelete(scope.row)">
                             <template #reference>
-                                <el-button size="small" type="danger" @click="handleDelete(scope.row)">
+                                <el-button size="small" type="danger">
                                     删除
                                 </el-button>
                             </template>
