@@ -51,9 +51,13 @@ import axios from 'axios';
 import { Edit, Delete } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus';
 
+
+onMounted(() => {
+    getTableData()
+})
+
 const tableData = ref([])
 const editFormRef = ref(null)
-const editDialogVisible = ref(false)
 const editForm = ref({
     title: '',
     describe: '',
@@ -62,15 +66,16 @@ const editForm = ref({
     editTime: ''
 });
 
-
-onMounted(() => {
-    getTableData()
-})
+const editDialogVisible = ref(false)
 
 const getTableData = async () => {
     const res = await axios.get('/adminapi/product/list')
     if (res.data.ActionType === 'OK') {
-        tableData.value = res.data.data
+        // console.log('retrieve from DB: ', res.data.data);
+        tableData.value = res.data.data.map(item => ({
+            ...item,
+            editTime: item.editTime || new Date().toISOString()  // 确保 editTime 不是 undefined
+        }));
     } else {
         console.log('读取失败：返回数据格式不正确');
     }
@@ -78,8 +83,15 @@ const getTableData = async () => {
 
 const handleEdit = async (data) => {
     editDialogVisible.value = true
+    const res = await axios.get(`/adminapi/product/list/${data._id}`);
+    if (res.data.ActionType === 'OK') {
+        Object.assign(editForm.value, res.data.data[0]); // 确保 Vue 响应式更新
+    }
+}
+
+const _handleEdit = async (data) => {
+    editDialogVisible.value = true
     const res = await axios.get(`adminapi/product/list/${data._id}`);
-    console.log('retrieve from DB: res: ', res.data.data[0]);    
     editForm.value = res.data.data[0]
 }
 const handleDelete = async (data) => {
@@ -88,6 +100,29 @@ const handleDelete = async (data) => {
 }
 
 const handleEditConfirm = async () => {
+    editFormRef.value.validate(async (valid) => {
+        if (valid) {
+            console.log('before update db, editForm value: ', editForm.value);
+            
+            const res = await axios.put(`/adminapi/product/list/${editForm.value._id}`, editForm.value);
+            if (res.data.ActionType === 'OK') {
+                ElMessage.success('更新成功')
+
+                // 手动更新 tableData，让 Vue 监听到变化
+                const index = tableData.value.findIndex(item => item._id === editForm.value._id);
+                if (index !== -1) {
+                    tableData.value[index] = { ...editForm.value, editTime: new Date().toISOString() };
+                }
+            }
+        }
+    });
+
+    editDialogVisible.value = false;
+}
+
+
+
+const __handleEditConfirm = async () => {
     editDialogVisible.value = false
     editFormRef.value.validate(async (valid) => {
         if (valid) {
