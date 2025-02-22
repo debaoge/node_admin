@@ -35,6 +35,7 @@ import { ElMessage } from 'element-plus';
 import upload from '@/util/upload';
 import Upload from '@/components/upload/Upload.vue';
 import { useRouter } from 'vue-router';
+import axios from 'axios';
 
 const store = useStore();
 const router = useRouter();
@@ -77,25 +78,26 @@ const handleUpdateAvatar = (newAvatar) => {
 };
 
 const handleSubmit = async () => {
-  userFormRef.value.validate(async (valid) => {
-    if (valid) {
-      try {
-        const res = await upload('/adminapi/user/add', userForm);
-        if (res.ActionType === 'OK') {
-          store.commit('changeUserInfo', res.data);
-          ElMessage.success('创建成功');
-          router.push('/mainbox/user-manage/userlist');
+    userFormRef.value.validate(async (valid) => {
+        if (valid) {
+            try {
+                const res = await upload('/adminapi/user/add', userForm);
+                if (res.ActionType === 'OK') {
+                    store.commit('changeUserInfo', res.data);
+                    ElMessage.success('创建成功');
+                    router.push('/mainbox/user-manage/userlist');
+                } else {
+                    ElMessage.error('创建失败：返回数据格式不正确');
+                }
+            } catch (error) {
+                ElMessage.error('请求失败，请检查网络或服务器状态');
+            }
         } else {
-            ElMessage.error('创建失败：返回数据格式不正确');
+            console.log('表单验证失败');
         }
-      } catch (error) {
-        ElMessage.error('请求失败，请检查网络或服务器状态');
-      }
-    } else {
-      console.log('表单验证失败');
-    }
-  });
+    });
 };
+
 </script>
 
 <style lang="scss" scoped>
