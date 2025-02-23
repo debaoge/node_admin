@@ -5,6 +5,17 @@
       <el-table :data="tableData" style="width: 100%">
         <el-table-column prop="title" label="产品名称" />
         <el-table-column prop="describe" label="简要概述" />
+        <el-table-column label="产品图标">
+                    <template #default="scope">
+                        <div v-if="scope.row.cover">
+                            <el-avatar :size="50" :src="'http://localhost:3001' + scope.row.cover"></el-avatar>
+                        </div>
+                        <div v-else>
+                            <el-avatar :size="50"
+                                src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+                        </div>
+                    </template>
+                </el-table-column>
         <el-table-column prop="editTime" label="更新时间">
           <template #default="scope">
             {{ formatTime.getTime(scope.row.editTime) }}
@@ -89,11 +100,6 @@ const handleEdit = async (data) => {
     }
 }
 
-const _handleEdit = async (data) => {
-    editDialogVisible.value = true
-    const res = await axios.get(`adminapi/product/list/${data._id}`);
-    editForm.value = res.data.data[0]
-}
 const handleDelete = async (data) => {
     await axios.delete(`/adminapi/product/list/${data._id}`)
     getTableData()
@@ -120,20 +126,4 @@ const handleEditConfirm = async () => {
     editDialogVisible.value = false;
 }
 
-
-
-const __handleEditConfirm = async () => {
-    editDialogVisible.value = false
-    editFormRef.value.validate(async (valid) => {
-        if (valid) {
-            console.log('before update db, editForm value: ', editForm.value);
-            
-            const res = await axios.put(`adminapi/product/list/${editForm.value._id}`, editForm.value);
-            if(res.data.ActionType === 'OK'){
-                ElMessage.success('更新成功')
-            }
-        } 
-    })
-    getTableData(); 
-}
 </script>
