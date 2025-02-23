@@ -9,6 +9,19 @@
                         {{ categoryFormat(scope.row.category) }}
                     </template>
                 </el-table-column>
+                <el-table-column label="图标">
+                    <template #default="scope">
+                        <div v-if="scope.row.cover">
+                            <el-avatar :size="50" :src="'http://localhost:3000' + scope.row.cover"></el-avatar>
+                        </div>
+                        <div v-else>
+                            <el-avatar :size="50"
+                                src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+                        </div>
+                    </template>
+                </el-table-column>
+
+
                 <el-table-column prop="editTime" label="更新时间">
                     <template #default="scope">
                         {{ formatTime.getTime(scope.row.editTime) }}
@@ -110,7 +123,7 @@ const editDialogVisible = ref(false)
 
 const getTableData = async () => {
     const res = await axios.get('/adminapi/news/list')
-    // console.log('newslist: res: ', res);
+    console.log('newslist: res: ', res);
     if (res.data.ActionType === 'OK') {
         tableData.value = res.data.data
     } else {
