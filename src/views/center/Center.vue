@@ -87,7 +87,7 @@ const avatarUrl = computed(() => {
     if (userForm.avatar.startsWith('data:image')) {
       return userForm.avatar;
     }
-    return 'http://localhost:3000' + userForm.avatar;
+    return 'http://localhost:3001' + userForm.avatar;
   }
   if (userForm.avatar instanceof File) {
     return URL.createObjectURL(userForm.avatar);
